@@ -1,10 +1,9 @@
-import { useState } from "react";
-import FormTemplate from "../ui/FormTemplate";
-import { TextField, Button, Box, Stack } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect, useState } from "react";
 import shortid from "shortid";
-import { useEffect } from "react";
+import FormTemplate from "../ui/FormTemplate";
 
 const TaskForm = ({ projectId }) => {
   const initState = {
@@ -20,7 +19,9 @@ const TaskForm = ({ projectId }) => {
   const { taskTitle, dueDate, status, assignee } = state;
   const { editData, isUpdate } = useStoreState((state) => state.task);
 
-  const { addTask, updateTask } = useStoreActions((actions) => actions.task);
+  const { addTask, updateTask, resetEditData } = useStoreActions(
+    (actions) => actions.task
+  );
 
   useEffect(() => {
     console.log("EditDAta" + editData);
@@ -52,6 +53,12 @@ const TaskForm = ({ projectId }) => {
     } else {
       alert("Invalid Title or Due Date or Status");
     }
+  };
+
+  const handleCancel = (e) => {
+    resetEditData();
+    setState(initState);
+    closeModal();
   };
 
   const handleOnChange = (e) => {
@@ -122,7 +129,7 @@ const TaskForm = ({ projectId }) => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             color={"error"}
-            onClick={() => closeModal()}
+            onClick={handleCancel}
           >
             Cancel
           </Button>

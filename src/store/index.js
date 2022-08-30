@@ -40,6 +40,9 @@ const taskModel = {
     state.editData = payload;
     state.isUpdate = true;
   }),
+  resetEditData: action((state) => {
+    state.editData = {};
+  }),
   updateTask: action((state, payload) => {
     state.tasks = state.tasks.map((item) => {
       if (item.id === payload.id) {
